@@ -11,11 +11,55 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    signingConfigs {
+        debug {
+            storeFile file("domon.keystore")
+            storePassword "lizhao"
+            keyAlias "domon"
+            keyPassword "lizhao"
+        }
+
+        release {
+            storeFile file("domon.keystore")
+            storePassword "lizhao"
+            keyAlias "domon"
+            keyPassword "lizhao"
+        }
+    }
+
     buildTypes {
         release {
+            zipAlignEnabled true
+            shrinkResources false
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            signingConfig signingConfigs.release
+
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    def outputFile = output.outputFile
+                    if (outputFile != null && outputFile.name.endsWith('release.apk')) {
+                        def fileName = "Sentence_${defaultConfig.versionCode}_v${defaultConfig.versionName}.apk"
+                        output.outputFile = new File(outputFile.parent, fileName)
+                    }
+
+                    if (outputFile != null && outputFile.name.endsWith('release-unsigned.apk')) {
+                        def fileName = "Sentence_${defaultConfig.versionCode}_v${defaultConfig.versionName}_unsigned.apk"
+                        output.outputFile = new File(outputFile.parent, fileName)
+                    }
+                }
+            }
         }
+    }
+}
+
+build.doLast {
+    copy {
+        from("build/outputs/apk")
+        into("bin")
+        include("Sentence_*.apk")
     }
 }
 
