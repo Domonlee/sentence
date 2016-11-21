@@ -13,13 +13,6 @@ android {
     }
 
     signingConfigs {
-        debug {
-            storeFile file("domon.keystore")
-            storePassword "lizhao"
-            keyAlias "domon"
-            keyPassword "lizhao"
-        }
-
         release {
             storeFile file("domon.keystore")
             storePassword "lizhao"
