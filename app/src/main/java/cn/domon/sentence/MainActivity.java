@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -16,6 +17,8 @@ import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -55,19 +58,20 @@ public class MainActivity extends AppCompatActivity {
 
     private void initFragments(Bundle savedInstanceState) {
         mFragmentManager = getSupportFragmentManager();
-//        mCurrentFragment = (Fragment) mFragmentManager.findFragmentById(R.id.frame_content);
-//        if (mCurrentFragment == null) {
-//            mCurrentFragment = FragmentUtils.createFragment(HomeFragment.class);
-//            mFragmentManager.beginTransaction().add(R.id.frame_content, mCurrentFragment).commit();
-//        }
-//        FragmentTransaction transaction = mFragmentManager.beginTransaction();
-//        if (savedInstanceState != null) {
-//            List<Fragment> fragments = mFragmentManager.getFragments();
-//            for (int i = 0; i < fragments.size(); i++) {
-//                transaction.hide(fragments.get(i));
-//            }
-//        }
-//        transaction.show(mCurrentFragment).commitAllowingStateLoss();
+        mCurrentFragment = (Fragment) mFragmentManager.findFragmentById(R.id.frame_content);
+        if (mCurrentFragment == null) {
+            String url = "baidu.com";
+            mCurrentFragment = ContentFragment.newInstance(url);
+            mFragmentManager.beginTransaction().add(R.id.frame_content, mCurrentFragment).commit();
+        }
+        FragmentTransaction transaction = mFragmentManager.beginTransaction();
+        if (savedInstanceState != null) {
+            List<Fragment> fragments = mFragmentManager.getFragments();
+            for (int i = 0; i < fragments.size(); i++) {
+                transaction.hide(fragments.get(i));
+            }
+        }
+        transaction.show(mCurrentFragment).commitAllowingStateLoss();
     }
 
     private void setUpDrawer() {
@@ -111,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-//                        switchDrawer(position);
+                        switchDrawer(position);
                         return true;
                     }
                 }).build();
@@ -119,54 +123,40 @@ public class MainActivity extends AppCompatActivity {
 
     private void switchDrawer(int positon) {
 
-//        switchFragment(getClazzandSetTitle(positon));
+        switchFragment(positon);
         mDrawer.closeDrawer();
     }
 
-//    private void switchFragment(Class<?> clazz) {
-//        if (clazz == null) {
-//            return;
-//        }
-//
-//        Fragment to = FragmentUtils.createFragment(clazz);
-//        if (to.isAdded()) {
-//            mFragmentManager.beginTransaction().hide(mCurrentFragment).show(to).commitAllowingStateLoss();
-//        } else {
-//            mFragmentManager.beginTransaction().hide(mCurrentFragment).add(R.id.frame_content, to)
-//                    .commitAllowingStateLoss();
-//        }
-//
-//        mCurrentFragment = to;
-//    }
-//
-//    private Class<?> getClazzandSetTitle(int positon) {
-//        Class<?> clazz = null;
-//
-//        switch (positon) {
-//            case 1:
-//                mToolbar.setTitle(getResources().getString(R.string.main_main));
-//                clazz = HomeFragment.class;
-//                break;
-//            case 2:
-//                clazz = CategoryFragment.class;
-//                mToolbar.setTitle(getResources().getString(R.string.main_categroy));
-//                break;
-//            case 3:
-//                mToolbar.setTitle(getResources().getString(R.string.main_grils));
-//                clazz = GirlsFragment.class;
-//                break;
-//            case 4:
-//                mToolbar.setTitle(R.string.main_jiandan);
-////                clazz = JiandanFragment.class;
-//                break;
-//            case 6:
-//                startActivity(new Intent(this, TestAcitity.class));
-//                break;
-//            default:
-//                break;
-//        }
-//        return clazz;
-//    }
+    private void switchFragment(int positon){
+        Fragment to = null;
+        switch (positon) {
+            // TODO: 16-11-21 add url
+            case 1:
+                mToolbar.setTitle("a");
+                to = ContentFragment.newInstance("aaa");
+                break;
+            case 2:
+                mToolbar.setTitle("b");
+                to = ContentFragment.newInstance("bbb");
+                break;
+            case 3:
+                mToolbar.setTitle("c");
+                to = ContentFragment.newInstance("ccc");
+                break;
+            default:
+                break;
+        }
+
+        if (to.isAdded()) {
+            mFragmentManager.beginTransaction().hide(mCurrentFragment).show(to).commitAllowingStateLoss();
+        } else {
+            mFragmentManager.beginTransaction().hide(mCurrentFragment).add(R.id.frame_content, to)
+                    .commitAllowingStateLoss();
+        }
+
+        mCurrentFragment = to;
+
+    }
 
     @Override
     protected void onDestroy() {
