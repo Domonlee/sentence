@@ -1,4 +1,4 @@
-package cn.domon.sentence;
+package cn.domon.sentence.util;
 
 import android.support.v4.app.Fragment;
 

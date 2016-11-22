@@ -1,4 +1,4 @@
-package cn.domon.sentence;
+package cn.domon.sentence.util;
 
 import android.app.Activity;
 import android.content.Context;

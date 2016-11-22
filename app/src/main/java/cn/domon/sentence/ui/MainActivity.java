@@ -1,4 +1,4 @@
-package cn.domon.sentence;
+package cn.domon.sentence.ui;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -22,6 +22,8 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import cn.domon.sentence.R;
+import cn.domon.sentence.util.SharedPreferenceUtil;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -122,7 +124,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void switchDrawer(int positon) {
-
         switchFragment(positon);
         mDrawer.closeDrawer();
     }
@@ -135,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
                 mToolbar.setTitle("a");
                 to = ContentFragment.newInstance("aaa");
                 break;
+            // TODO: 16-11-22 没有title
             case 2:
                 mToolbar.setTitle("b");
                 to = ContentFragment.newInstance("bbb");
@@ -153,9 +155,7 @@ public class MainActivity extends AppCompatActivity {
             mFragmentManager.beginTransaction().hide(mCurrentFragment).add(R.id.frame_content, to)
                     .commitAllowingStateLoss();
         }
-
         mCurrentFragment = to;
-
     }
 
     @Override
