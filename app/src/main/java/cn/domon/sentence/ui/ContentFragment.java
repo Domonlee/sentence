@@ -72,6 +72,8 @@ public class ContentFragment extends Fragment implements Contract.View {
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
+        loadMore();
+
         return view;
     }
 
@@ -90,8 +92,23 @@ public class ContentFragment extends Fragment implements Contract.View {
         }
         mAdapter.addAll(datas);
         mAdapter.notifyDataSetChanged();
-
     }
+
+    private void loadMore(){
+        mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
+            @Override
+            public void onRefresh() {
+                mPresenter.start();
+                mPresenter.reqContext(mUrl);
+                mRecyclerView.refreshComplete();
+            }
+
+            @Override
+            public void onLoadMore() {
+            }
+        });
+    }
+
 
     @Override
     public void setPresenter(Contract.Presenter presenter) {

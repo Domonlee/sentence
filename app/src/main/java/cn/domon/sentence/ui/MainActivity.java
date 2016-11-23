@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         mFragmentManager = getSupportFragmentManager();
         mCurrentFragment = (Fragment) mFragmentManager.findFragmentById(R.id.frame_content);
         if (mCurrentFragment == null) {
-            String url = "baidu.com";
+            String url = "";
             mCurrentFragment = ContentFragment.newInstance(url);
             mFragmentManager.beginTransaction().add(R.id.frame_content, mCurrentFragment).commit();
         }
@@ -77,18 +77,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setUpDrawer() {
-        PrimaryDrawerItem itemHome = new PrimaryDrawerItem()
+        PrimaryDrawerItem itemMTMJ = new PrimaryDrawerItem()
                 .withIcon(R.mipmap.ic_launcher)
-                .withName("a");
-        PrimaryDrawerItem item2 = new PrimaryDrawerItem()
+                .withName(R.string.meitu);
+        PrimaryDrawerItem itemSXMJ = new PrimaryDrawerItem()
                 .withIcon(R.mipmap.ic_launcher)
-                .withName("b");
-        PrimaryDrawerItem itemGirls = new PrimaryDrawerItem()
+                .withName(R.string.shouxie);
+        PrimaryDrawerItem itemJDDB = new PrimaryDrawerItem()
                 .withIcon(R.mipmap.ic_launcher)
-                .withName("c");
-        PrimaryDrawerItem itemJiandan = new PrimaryDrawerItem()
+                .withName(R.string.duibai);
+        PrimaryDrawerItem itemAbout = new PrimaryDrawerItem()
                 .withIcon(R.mipmap.ic_launcher)
-                .withName("d");
+                .withName(R.string.about);
 
         AccountHeader accountHeader = new AccountHeaderBuilder()
                 .withActivity(this)
@@ -108,11 +108,11 @@ public class MainActivity extends AppCompatActivity {
                 .withToolbar(mToolbar)
                 .withAccountHeader(accountHeader)
                 .addDrawerItems(
-                        itemHome,
-                        item2,
-                        itemGirls,
+                        itemMTMJ,
+                        itemSXMJ,
+                        itemJDDB,
                         new DividerDrawerItem(),
-                        itemJiandan
+                        itemAbout
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
@@ -133,17 +133,20 @@ public class MainActivity extends AppCompatActivity {
         switch (positon) {
             // TODO: 16-11-21 add url
             case 1:
-                mToolbar.setTitle("a");
+                mToolbar.setTitle(R.string.meitu);
                 to = ContentFragment.newInstance("aaa");
                 break;
-            // TODO: 16-11-22 没有title
             case 2:
-                mToolbar.setTitle("b");
+                mToolbar.setTitle(R.string.shouxie);
                 to = ContentFragment.newInstance("bbb");
                 break;
             case 3:
-                mToolbar.setTitle("c");
+                mToolbar.setTitle(R.string.duibai);
                 to = ContentFragment.newInstance("ccc");
+                break;
+            case 5:
+                mToolbar.setTitle(R.string.about);
+                to = ContentFragment.newInstance("ddd");
                 break;
             default:
                 break;

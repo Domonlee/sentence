@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">sentence</string>
+    <string name="meitu">美图美句</string>
+    <string name="shouxie">手写美句</string>
+    <string name="duibai">经典对白</string>
+    <string name="about">关于</string>
 </resources>

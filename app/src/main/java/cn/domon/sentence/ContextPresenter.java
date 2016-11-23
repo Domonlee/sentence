@@ -10,6 +10,7 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import cn.domon.sentence.network.RxAPIs;
 import okhttp3.ResponseBody;
@@ -24,7 +25,7 @@ import retrofit2.Retrofit;
 public class ContextPresenter implements Contract.Presenter {
     private Contract.View mView;
 
-    //todo test
+    //todo reqMTMJ
     public static final String BASE_URL = "http://www.juzimi.com/";
     private Document mDocument;
     private List<String> titleData;
@@ -34,7 +35,7 @@ public class ContextPresenter implements Contract.Presenter {
 
     private List<ContextData> data;
     private ContextData map;
-    //todo test
+    private int mIndex;
 
     public ContextPresenter(Contract.View mView) {
         this.mView = mView;
@@ -42,7 +43,9 @@ public class ContextPresenter implements Contract.Presenter {
     }
 
     public void start() {
-
+        // TODO: 16-11-23 random num
+        Random random = new Random();
+        mIndex = random.nextInt(20);
     }
 
     @Override
@@ -52,7 +55,7 @@ public class ContextPresenter implements Contract.Presenter {
                 .build();
 
         RxAPIs rxAPIs = retrofit.create(RxAPIs.class);
-        Call<ResponseBody> call = rxAPIs.test1();
+        Call<ResponseBody> call = rxAPIs.reqMTMJ(mIndex);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -64,7 +67,7 @@ public class ContextPresenter implements Contract.Presenter {
                     e.printStackTrace();
                 }
                 if (doc.equals("null")) {
-                    KLog.e("null");
+                    KLog.e("ResponseBody is null");
                 }
 
                 mDocument = Jsoup.parse(doc);
@@ -83,7 +86,7 @@ public class ContextPresenter implements Contract.Presenter {
                     hrefData.add(e.attr("src"));
                 }
 
-                data = new ArrayList<ContextData>();
+                data = new ArrayList<>();
                 for (int i = 0; i < hrefData.size(); i++) {
                     map = new ContextData();
                     map.setTitle(titleData.get(i));
