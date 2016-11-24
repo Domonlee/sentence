@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Random;
 
 import cn.domon.sentence.network.RxAPIs;
+import cn.domon.sentence.ui.ContentFragment;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,7 +26,6 @@ import retrofit2.Retrofit;
 public class ContextPresenter implements Contract.Presenter {
     private Contract.View mView;
 
-    //todo reqMTMJ
     public static final String BASE_URL = "http://www.juzimi.com/";
     private Document mDocument;
     private List<String> titleData;
@@ -49,13 +49,27 @@ public class ContextPresenter implements Contract.Presenter {
     }
 
     @Override
-    public void reqContext(String url) {
+    public void reqContext(final int type) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .build();
 
         RxAPIs rxAPIs = retrofit.create(RxAPIs.class);
-        Call<ResponseBody> call = rxAPIs.reqMTMJ(mIndex);
+        Call<ResponseBody> call = null;
+
+        switch (type) {
+            case ContentFragment.REQ_MTMJ:
+                call = rxAPIs.reqMTMJ(mIndex);
+                break;
+            case ContentFragment.REQ_SXMJ:
+                call = rxAPIs.reqSXMJ(mIndex);
+                break;
+            case ContentFragment.REQ_JDDB:
+                call = rxAPIs.reqJDDB(mIndex);
+                break;
+            default:
+                break;
+        }
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -72,12 +86,13 @@ public class ContextPresenter implements Contract.Presenter {
 
                 mDocument = Jsoup.parse(doc);
 
-                //// FIXME: 16-11-22 case 2&3 has no elements xlistju
                 titleData = new ArrayList<>();
-                Elements es = mDocument.getElementsByClass("xlistju");
-                KLog.e("ex size = " + es.size());
-                for (Element e : es) {
-                    titleData.add(e.text());
+                if (type == ContentFragment.REQ_MTMJ) {
+                    Elements es = mDocument.getElementsByClass("xlistju");
+                    KLog.e("ex size = " + es.size());
+                    for (Element e : es) {
+                        titleData.add(e.text());
+                    }
                 }
 
                 hrefData = new ArrayList<>();
@@ -89,7 +104,9 @@ public class ContextPresenter implements Contract.Presenter {
                 data = new ArrayList<>();
                 for (int i = 0; i < hrefData.size(); i++) {
                     map = new ContextData();
-                    map.setTitle(titleData.get(i));
+                    if (type == ContentFragment.REQ_MTMJ) {
+                        map.setTitle(titleData.get(i));
+                    }
                     map.setImgUlr(hrefData.get(i));
 
                     data.add(map);

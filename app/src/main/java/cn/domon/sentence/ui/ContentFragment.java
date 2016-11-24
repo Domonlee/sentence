@@ -27,20 +27,23 @@ import cn.domon.sentence.adapter.ContextDataAdapter;
  * Created by Domon on 16-11-21.
  */
 
-// TODO: 16-11-21 add retorfit
-
 public class ContentFragment extends Fragment implements Contract.View {
+
+    public static final int REQ_MTMJ = 0;
+    public static final int REQ_SXMJ = 1;
+    public static final int REQ_JDDB = 2;
+
     @Bind(R.id.content_rv)
     XRecyclerView mRecyclerView;
 
     private Contract.Presenter mPresenter;
     private ContextDataAdapter mAdapter;
-    private String mUrl;
+    private int mType;
 
-    public static ContentFragment newInstance(String url) {
+    public static ContentFragment newInstance(int type) {
 
         Bundle args = new Bundle();
-        args.putString("url", url);
+        args.putInt("type", type);
 
         ContentFragment fragment = new ContentFragment();
         fragment.setArguments(args);
@@ -62,10 +65,10 @@ public class ContentFragment extends Fragment implements Contract.View {
         View view = inflater.inflate(R.layout.fragment_content, container, false);
         ButterKnife.bind(this, view);
 
-        mUrl = getArguments().getString("url");
+        mType = getArguments().getInt("type");
 
         mPresenter = new ContextPresenter(this);
-        mPresenter.reqContext(mUrl);
+        mPresenter.reqContext(mType);
 
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2,
                 OrientationHelper.VERTICAL);
@@ -94,12 +97,13 @@ public class ContentFragment extends Fragment implements Contract.View {
         mAdapter.notifyDataSetChanged();
     }
 
-    private void loadMore(){
+    //// TODO: 16-11-24 load more 分页问题
+    private void loadMore() {
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
                 mPresenter.start();
-                mPresenter.reqContext(mUrl);
+                mPresenter.reqContext(mType);
                 mRecyclerView.refreshComplete();
             }
 

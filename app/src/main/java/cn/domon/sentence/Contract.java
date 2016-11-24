@@ -13,6 +13,6 @@ public interface Contract {
     }
 
     interface Presenter extends BasePresenter{
-        void reqContext(String url);
+        void reqContext(int type);
     }
 }

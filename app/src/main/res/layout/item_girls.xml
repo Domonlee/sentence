@@ -11,10 +11,13 @@
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:maxHeight="300dp"
-        android:scaleType="centerCrop" />
+        android:scaleType="fitXY" />
 
     <TextView
         android:id="@+id/item_girls_tv"
+        android:layout_gravity="bottom"
+        android:layout_margin="1dp"
+        android:background="#3eee"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

@@ -15,6 +15,7 @@ import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
@@ -23,7 +24,6 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.domon.sentence.R;
-import cn.domon.sentence.util.SharedPreferenceUtil;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,9 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
         mContext = this;
 
-        SharedPreferenceUtil.setIntegerValue("isFirstStart", 1);
         checkUpdate();
-
 
         initFragments(savedInstanceState);
         ButterKnife.bind(this);
@@ -62,8 +60,7 @@ public class MainActivity extends AppCompatActivity {
         mFragmentManager = getSupportFragmentManager();
         mCurrentFragment = (Fragment) mFragmentManager.findFragmentById(R.id.frame_content);
         if (mCurrentFragment == null) {
-            String url = "";
-            mCurrentFragment = ContentFragment.newInstance(url);
+            mCurrentFragment = ContentFragment.newInstance(ContentFragment.REQ_MTMJ);
             mFragmentManager.beginTransaction().add(R.id.frame_content, mCurrentFragment).commit();
         }
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
@@ -78,23 +75,23 @@ public class MainActivity extends AppCompatActivity {
 
     private void setUpDrawer() {
         PrimaryDrawerItem itemMTMJ = new PrimaryDrawerItem()
-                .withIcon(R.mipmap.ic_launcher)
+                .withIcon(R.mipmap.drawer_meitu)
                 .withName(R.string.meitu);
         PrimaryDrawerItem itemSXMJ = new PrimaryDrawerItem()
-                .withIcon(R.mipmap.ic_launcher)
+                .withIcon(R.mipmap.drawer_shouxie)
                 .withName(R.string.shouxie);
         PrimaryDrawerItem itemJDDB = new PrimaryDrawerItem()
-                .withIcon(R.mipmap.ic_launcher)
+                .withIcon(R.mipmap.drawer_duibai)
                 .withName(R.string.duibai);
         PrimaryDrawerItem itemAbout = new PrimaryDrawerItem()
-                .withIcon(R.mipmap.ic_launcher)
+                .withIcon(R.mipmap.drawer_about)
                 .withName(R.string.about);
 
         AccountHeader accountHeader = new AccountHeaderBuilder()
                 .withActivity(this)
                 .withHeightDp(48)
                 .withHeaderBackground(R.color.colorPrimaryDark)
-//                .addProfiles(new ProfileDrawerItem().withName("Domon").withEmail("viplizhao@gmail.com").withIcon(R.mipmap.ic_launcher))
+                .addProfiles(new ProfileDrawerItem().withName("Domon").withEmail("viplizhao@gmail.com").withIcon(R.mipmap.ic_launcher))
                 .withOnAccountHeaderItemLongClickListener(new AccountHeader.OnAccountHeaderItemLongClickListener() {
                     @Override
                     public boolean onProfileLongClick(View view, IProfile profile, boolean current) {
@@ -134,19 +131,19 @@ public class MainActivity extends AppCompatActivity {
             // TODO: 16-11-21 add url
             case 1:
                 mToolbar.setTitle(R.string.meitu);
-                to = ContentFragment.newInstance("aaa");
+                to = ContentFragment.newInstance(ContentFragment.REQ_MTMJ);
                 break;
             case 2:
                 mToolbar.setTitle(R.string.shouxie);
-                to = ContentFragment.newInstance("bbb");
+                to = ContentFragment.newInstance(ContentFragment.REQ_SXMJ);
                 break;
             case 3:
                 mToolbar.setTitle(R.string.duibai);
-                to = ContentFragment.newInstance("ccc");
+                to = ContentFragment.newInstance(ContentFragment.REQ_JDDB);
                 break;
             case 5:
                 mToolbar.setTitle(R.string.about);
-                to = ContentFragment.newInstance("ddd");
+                to = ContentFragment.newInstance(0);
                 break;
             default:
                 break;
