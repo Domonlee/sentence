@@ -7,12 +7,12 @@ import java.util.List;
  */
 
 public interface Contract {
-    interface View extends BaseView<Presenter>{
+    interface View extends BaseView<Presenter> {
 
         void setData(List<ContextData> data);
     }
 
-    interface Presenter extends BasePresenter{
-        void reqContext(int type);
+    interface Presenter extends BasePresenter {
+        void reqContext(int type, int index);
     }
 }

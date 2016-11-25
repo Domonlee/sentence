@@ -10,7 +10,6 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import cn.domon.sentence.network.RxAPIs;
 import cn.domon.sentence.ui.ContentFragment;
@@ -35,7 +34,6 @@ public class ContextPresenter implements Contract.Presenter {
 
     private List<ContextData> data;
     private ContextData map;
-    private int mIndex;
 
     public ContextPresenter(Contract.View mView) {
         this.mView = mView;
@@ -43,13 +41,10 @@ public class ContextPresenter implements Contract.Presenter {
     }
 
     public void start() {
-        // TODO: 16-11-23 random num
-        Random random = new Random();
-        mIndex = random.nextInt(20);
     }
 
     @Override
-    public void reqContext(final int type) {
+    public void reqContext(final int type, int index) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .build();
@@ -59,13 +54,13 @@ public class ContextPresenter implements Contract.Presenter {
 
         switch (type) {
             case ContentFragment.REQ_MTMJ:
-                call = rxAPIs.reqMTMJ(mIndex);
+                call = rxAPIs.reqMTMJ(index);
                 break;
             case ContentFragment.REQ_SXMJ:
-                call = rxAPIs.reqSXMJ(mIndex);
+                call = rxAPIs.reqSXMJ(index);
                 break;
             case ContentFragment.REQ_JDDB:
-                call = rxAPIs.reqJDDB(mIndex);
+                call = rxAPIs.reqJDDB(index);
                 break;
             default:
                 break;

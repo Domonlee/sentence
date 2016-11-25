@@ -14,6 +14,7 @@ import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.socks.library.KLog;
 
 import java.util.List;
+import java.util.Random;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -39,6 +40,8 @@ public class ContentFragment extends Fragment implements Contract.View {
     private Contract.Presenter mPresenter;
     private ContextDataAdapter mAdapter;
     private int mType;
+    private int mRandomIndex;
+
 
     public static ContentFragment newInstance(int type) {
 
@@ -57,6 +60,11 @@ public class ContentFragment extends Fragment implements Contract.View {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAdapter = new ContextDataAdapter(getContext());
+
+        Random random = new Random();
+        mRandomIndex = random.nextInt(29);
+
+        KLog.e("mRandomIndex = " + mRandomIndex);
     }
 
     @Nullable
@@ -68,9 +76,9 @@ public class ContentFragment extends Fragment implements Contract.View {
         mType = getArguments().getInt("type");
 
         mPresenter = new ContextPresenter(this);
-        mPresenter.reqContext(mType);
+        mPresenter.reqContext(mType, mRandomIndex);
 
-        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2,
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(1,
                 OrientationHelper.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mAdapter);
@@ -88,11 +96,6 @@ public class ContentFragment extends Fragment implements Contract.View {
 
     @Override
     public void setData(List<ContextData> datas) {
-        for (int i = 0; i < datas.size(); i++) {
-            KLog.e("------");
-            KLog.e(datas.get(i).getTitle());
-            KLog.e(datas.get(i).getImgUlr());
-        }
         mAdapter.addAll(datas);
         mAdapter.notifyDataSetChanged();
     }
@@ -102,13 +105,13 @@ public class ContentFragment extends Fragment implements Contract.View {
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                mPresenter.start();
-                mPresenter.reqContext(mType);
-                mRecyclerView.refreshComplete();
             }
 
             @Override
             public void onLoadMore() {
+                mPresenter.reqContext(mType, mRandomIndex++);
+                KLog.e("mRandomIndex = " + mRandomIndex);
+                mRecyclerView.refreshComplete();
             }
         });
     }
