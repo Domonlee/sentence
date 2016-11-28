@@ -7,9 +7,13 @@ android {
         applicationId "cn.domon.sentence"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        versionCode 4
+        versionName "1.0.003"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    lintOptions {
+        abortOnError false
     }
 
     signingConfigs {
@@ -104,4 +108,7 @@ dependencies {
     }
 
     compile 'com.github.paolorotolo:appintro:4.0.0'
+
+    //pgyer
+    compile 'com.pgyersdk:sdk:2.4.0'
 }

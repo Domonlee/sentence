@@ -18,6 +18,7 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
+import com.pgyersdk.update.PgyUpdateManager;
 
 import java.util.List;
 
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkUpdate() {
-//        PgyUpdateManager.register(this);
+        PgyUpdateManager.register(this);
     }
 
     private void initFragments(Bundle savedInstanceState) {
