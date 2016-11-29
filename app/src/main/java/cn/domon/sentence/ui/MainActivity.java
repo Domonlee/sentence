@@ -129,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
     private void switchFragment(int positon){
         Fragment to = null;
         switch (positon) {
-            // TODO: 16-11-21 add url
             case 1:
                 mToolbar.setTitle(R.string.meitu);
                 to = ContentFragment.newInstance(ContentFragment.REQ_MTMJ);

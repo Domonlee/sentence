@@ -4,4 +4,6 @@
     <string name="shouxie">手写美句</string>
     <string name="duibai">经典对白</string>
     <string name="about">关于</string>
+
+    <string name="imgUlrTag">imgUrlTag</string>
 </resources>
